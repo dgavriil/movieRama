@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
         @CompoundIndex(def = "{ 'movieId': 1, 'userId': 1}", background = true, useGeneratedName = true)
 })
 @Document(collection = "vote")
-public class Votes {
+public class Vote {
     @Id
     private String id;
     private String movieId;

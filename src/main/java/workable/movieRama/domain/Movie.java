@@ -2,6 +2,8 @@ package workable.movieRama.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -27,26 +29,20 @@ public class Movie {
     private String description;
     private String userId;
     private LocalDateTime publicationDate;
-    private int likes;
-    private int dislikes;
+    @Builder.Default
+    private Long likes = 0L;
+    @Builder.Default
+    private Long dislikes = 0L;
 
-    @JsonIgnore
-    public String getLikes() {
-        return likes;
-    }
+    public ObjectNode toJson() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode resp = mapper.createObjectNode();
 
-    @JsonProperty
-    public void setLikes(String likes) {
-        this.likes = likes;
-    }
+        resp.put("title", this.title);
+        resp.put("description", this.description);
+        resp.put("likes", this.likes);
+        resp.put("dislikes", this.dislikes);
 
-    @JsonIgnore
-    public String getDislikes() {
-        return dislikes;
-    }
-
-    @JsonProperty
-    public void setDislikes(String likes) {
-        this.dislikes = dislikes;
+        return resp;
     }
 }

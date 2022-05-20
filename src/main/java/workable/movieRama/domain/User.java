@@ -3,6 +3,8 @@ package workable.movieRama.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@NoArgsConstructor
 @CompoundIndexes({
         @CompoundIndex(def = "{ 'userId': 1}", background = true, useGeneratedName = true),
         @CompoundIndex(def = "{ 'email': 1}", background = true, useGeneratedName = true),
@@ -53,5 +55,15 @@ public class User {
     @JsonProperty
     public void setId(String id) {
         this.id = id;
+    }
+
+    public ObjectNode toJson() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode resp = mapper.createObjectNode();
+
+        resp.put("email", this.email);
+        resp.put("userId", this.userId);
+
+        return resp;
     }
 }
