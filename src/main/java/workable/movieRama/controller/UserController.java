@@ -44,6 +44,7 @@ public class UserController {
     private final VoteService voteService;
 
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping(value = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public  Mono<ObjectNode> loginUser(WebSession session, @Valid @RequestBody LoginRequest loginRequest) {
@@ -63,7 +64,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Mono<ObjectNode> createUSer(@Valid @RequestBody User user) {
 
         user.setRegistratioDate(LocalDateTime.now());
@@ -90,7 +91,7 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/movie/like/{movieId}/")
+    @DeleteMapping("/movie/vote/delete/{movieId}/")
     public Mono<ObjectNode> deleteVote(
             @RequestHeader(value = "X-workable-user-id") String userId,
             @PathVariable String movieId){
